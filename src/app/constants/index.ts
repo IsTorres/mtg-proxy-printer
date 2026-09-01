@@ -18,3 +18,4 @@ export const A4_W_PX = 2480;  // 210mm at 300dpi
 export const A4_H_PX = 3508;  // 297mm at 300dpi
 export const CARD_W_PX = 744;  // 63mm at 300dpi
 export const CARD_H_PX = 1039; // 88mm at 300dpi
+export const CARD_ASPECT_RATIO = 63 / 88; // ≈ 0.7159
