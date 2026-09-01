@@ -1,7 +1,6 @@
 import React from "react";
 import { X, Minus, Plus } from "lucide-react";
 import type { CardEntry } from "../types";
-import { imageUrl } from "../lib/scryfall";
 
 interface DeckEntryProps {
   entry: CardEntry;
@@ -15,7 +14,7 @@ function DeckEntryInner({ entry, onAdjustQty, onRemove }: DeckEntryProps) {
   return (
     <div className="flex items-center gap-2 px-2 py-1.5 group hover:bg-muted/30 transition-colors">
       <img
-        src={imageUrl(card)}
+        src={card.url}
         alt={card.name}
         className="w-6 h-[34px] object-cover flex-shrink-0 opacity-90 group-hover:opacity-100 transition-opacity"
       />

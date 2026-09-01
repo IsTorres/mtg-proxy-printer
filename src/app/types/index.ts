@@ -7,7 +7,13 @@ export interface ScryfallCard {
   card_faces?: Array<{ image_uris?: { normal: string; large: string } }>;
 }
 
+export interface CardImage {
+  id: string;
+  name: string;
+  url: string;
+}
+
 export interface CardEntry {
-  card: ScryfallCard;
+  card: CardImage;
   qty: number;
 }

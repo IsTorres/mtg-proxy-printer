@@ -1,6 +1,6 @@
 import { Search, X, Loader2, Plus } from "lucide-react";
-import type { ScryfallCard } from "../types";
-import { imageUrl } from "../lib/scryfall";
+import type { ScryfallCard, CardImage } from "../types";
+import { imageUrl, toCardImage } from "../lib/scryfall";
 
 interface SearchBarProps {
   query: string;
@@ -8,7 +8,7 @@ interface SearchBarProps {
   results: ScryfallCard[];
   noResults: boolean;
   searching: boolean;
-  onSelectCard: (card: ScryfallCard) => void;
+  onSelectCard: (card: CardImage) => void;
 }
 
 export function SearchBar({
@@ -25,7 +25,7 @@ export function SearchBar({
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Escape") onQueryChange("");
-    if (e.key === "Enter" && results.length > 0) onSelectCard(results[0]);
+    if (e.key === "Enter" && results.length > 0) onSelectCard(toCardImage(results[0]));
   };
 
   return (
@@ -73,7 +73,7 @@ export function SearchBar({
             results.map(card => (
               <button
                 key={card.id}
-                onMouseDown={() => onSelectCard(card)}
+                onMouseDown={() => onSelectCard(toCardImage(card))}
                 className="w-full flex items-center gap-3 px-3 py-2 hover:bg-accent/10 text-left group transition-colors border-b border-border/50 last:border-0"
               >
                 <img

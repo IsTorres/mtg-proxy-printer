@@ -1,23 +1,24 @@
 import { useState, useCallback } from "react";
-import type { ScryfallCard } from "../types";
+import type { CardImage } from "../types";
 import { CARDS_PER_PAGE } from "../constants";
 import { useScryfallSearch } from "../hooks/useScryfallSearch";
 import { useDeck } from "../hooks/useDeck";
 import { usePagination } from "../hooks/usePagination";
 import { Header } from "../components/Header";
 import { SearchBar } from "../components/SearchBar";
+import { CustomCardUpload } from "../components/CustomCardUpload";
 import { DeckList } from "../components/DeckList";
 import { PrintPreview } from "../components/PrintPreview";
 import { PrintSheet } from "../components/PrintSheet";
 
 export function Home() {
   const { query, setQuery, results, noResults, searching, clearSearch } = useScryfallSearch();
-  const { entries, flatCards, totalPages, addCard, removeEntry, adjustQty, clearAll } = useDeck();
+  const { entries, flatCards, totalPages, addCard, addCustomCard, removeEntry, adjustQty, clearAll } = useDeck();
   const { safePage, prev, next, reset } = usePagination(totalPages);
   const [showCutLines, setShowCutLines] = useState(true);
 
   const handleSelectCard = useCallback(
-    (card: ScryfallCard) => {
+    (card: CardImage) => {
       addCard(card);
       clearSearch();
     },
@@ -54,6 +55,9 @@ export function Home() {
         <Header
           showCutLines={showCutLines}
           onToggleCutLines={() => setShowCutLines(v => !v)}
+          flatCards={flatCards}
+          totalPages={totalPages}
+          currentPage={safePage}
         />
 
         <div className="flex flex-1 min-h-0">
@@ -66,6 +70,7 @@ export function Home() {
               searching={searching}
               onSelectCard={handleSelectCard}
             />
+            <CustomCardUpload onAddCustom={addCustomCard} />
             <DeckList
               entries={entries}
               totalCards={flatCards.length}

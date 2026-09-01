@@ -1,10 +1,9 @@
 import React from "react";
-import type { ScryfallCard } from "../types";
+import type { CardImage } from "../types";
 import { CARDS_PER_PAGE } from "../constants";
-import { imageUrl } from "../lib/scryfall";
 
 interface PrintSheetProps {
-  cards: ScryfallCard[];
+  cards: CardImage[];
   showCutLines: boolean;
 }
 
@@ -41,7 +40,7 @@ function PrintSheetInner({ cards, showCutLines }: PrintSheetProps) {
         >
           {card ? (
             <img
-              src={imageUrl(card, "large")}
+              src={card.url}
               alt={card.name}
               loading="lazy"
               style={{

@@ -1,4 +1,4 @@
-import type { ScryfallCard } from "../types";
+import type { ScryfallCard, CardImage } from "../types";
 import { SCRYFALL_API } from "../constants";
 
 export function imageUrl(card: ScryfallCard, size: "normal" | "large" = "normal"): string {
@@ -6,6 +6,14 @@ export function imageUrl(card: ScryfallCard, size: "normal" | "large" = "normal"
   if (card.card_faces?.[0]?.image_uris)
     return card.card_faces[0].image_uris[size] ?? card.card_faces[0].image_uris.normal ?? "";
   return "";
+}
+
+export function toCardImage(card: ScryfallCard): CardImage {
+  return {
+    id: card.id,
+    name: card.name,
+    url: imageUrl(card, "large") || imageUrl(card),
+  };
 }
 
 export async function searchCards(
