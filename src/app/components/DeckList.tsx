@@ -21,24 +21,24 @@ export function DeckList({
 }: DeckListProps) {
   return (
     <>
-      <div className="px-4 pt-3 pb-1 flex items-center justify-between flex-shrink-0">
-        <span className="text-[9px] font-mono text-muted-foreground tracking-[0.2em]">
-          DECK LIST
+      <div className="px-5 pt-4 pb-2 flex items-center justify-between flex-shrink-0">
+        <span className="text-[10px] font-mono text-primary tracking-[0.15em] uppercase">
+          Deck List
         </span>
-        <span className="text-[10px] font-mono text-muted-foreground">
+        <span className="text-[10px] font-mono text-on-surface-variant">
           {totalCards}{" "}
-          <span className="text-muted-foreground/60">cards</span>
+          <span className="text-on-surface-variant/60">cards</span>
           {" · "}
           {totalPages}{" "}
-          <span className="text-muted-foreground/60">{totalPages === 1 ? "page" : "pages"}</span>
+          <span className="text-on-surface-variant/60">{totalPages === 1 ? "page" : "pages"}</span>
         </span>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-2 pb-2">
+      <div className="flex-1 overflow-y-auto px-3 pb-3">
         {entries.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 gap-3 text-center px-4">
-            <Layers size={28} className="text-muted-foreground opacity-30" />
-            <p className="text-[12px] text-muted-foreground leading-relaxed">
+            <Layers size={28} className="text-on-surface-variant/30" />
+            <p className="text-[12px] text-on-surface-variant leading-relaxed">
               Search for cards above and add them to your proxy sheet.
             </p>
           </div>
@@ -57,12 +57,12 @@ export function DeckList({
       </div>
 
       {entries.length > 0 && (
-        <div className="px-4 py-3 border-t border-border flex-shrink-0">
+        <div className="px-5 py-3 border-t border-outline-variant/30 flex-shrink-0">
           <button
             onClick={onClearAll}
-            className="w-full text-[10px] font-mono text-muted-foreground hover:text-red-400 transition-colors tracking-widest"
+            className="w-full text-[10px] font-mono text-on-surface-variant hover:text-error transition-colors tracking-widest uppercase"
           >
-            CLEAR ALL
+            Clear All
           </button>
         </div>
       )}

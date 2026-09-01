@@ -29,15 +29,15 @@ export function SearchBar({
   };
 
   return (
-    <div className="p-4 border-b border-border">
-      <div className="text-[9px] font-mono text-muted-foreground tracking-[0.2em] mb-2">
-        SEARCH CARDS
+    <div className="px-5 py-4 border-b border-outline-variant/30">
+      <div className="text-[10px] font-mono text-primary tracking-[0.15em] mb-2 uppercase">
+        Search Cards
       </div>
 
       <div className="relative">
         <Search
-          size={13}
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none"
+          size={14}
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none"
         />
         <input
           value={query}
@@ -45,28 +45,28 @@ export function SearchBar({
           onBlur={handleBlur}
           onKeyDown={handleKeyDown}
           placeholder="Lightning Bolt…"
-          className="w-full bg-input-background border border-border pl-9 pr-8 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent transition-colors"
+          className="w-full bg-surface-container border border-outline-variant/30 rounded-lg pl-9 pr-8 py-2.5 text-sm text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all"
         />
         {query && !searching && (
           <button
             onMouseDown={() => onQueryChange("")}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface"
           >
-            <X size={11} />
+            <X size={12} />
           </button>
         )}
         {searching && (
           <Loader2
-            size={12}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground animate-spin"
+            size={13}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-primary animate-spin"
           />
         )}
       </div>
 
       {(results.length > 0 || noResults) && (
-        <div className="mt-1 border border-border bg-card overflow-hidden">
+        <div className="mt-2 border border-outline-variant/30 bg-surface-container rounded-lg overflow-hidden shadow-lg">
           {noResults ? (
-            <div className="px-3 py-2.5 text-[11px] font-mono text-muted-foreground">
+            <div className="px-3 py-2.5 text-[11px] font-mono text-on-surface-variant">
               No cards found.
             </div>
           ) : (
@@ -74,22 +74,24 @@ export function SearchBar({
               <button
                 key={card.id}
                 onMouseDown={() => onSelectCard(toCardImage(card))}
-                className="w-full flex items-center gap-3 px-3 py-2 hover:bg-accent/10 text-left group transition-colors border-b border-border/50 last:border-0"
+                className="w-full flex items-center gap-3 px-3 py-2 hover:bg-primary/5 text-left group transition-colors border-b border-outline-variant/20 last:border-0"
               >
                 <img
                   src={imageUrl(card)}
                   alt={card.name}
-                  className="w-7 h-[39px] object-cover flex-shrink-0"
+                  className="w-7 h-[39px] object-cover flex-shrink-0 rounded"
                 />
                 <div className="min-w-0 flex-1">
-                  <div className="text-[13px] leading-tight truncate">{card.name}</div>
-                  <div className="text-[10px] font-mono text-muted-foreground truncate mt-0.5">
+                  <div className="text-[13px] font-display font-semibold leading-tight truncate text-on-surface">
+                    {card.name}
+                  </div>
+                  <div className="text-[10px] font-mono text-on-surface-variant truncate mt-0.5">
                     {card.set_name}
                   </div>
                 </div>
                 <Plus
                   size={12}
-                  className="text-muted-foreground group-hover:text-accent flex-shrink-0 transition-colors"
+                  className="text-on-surface-variant group-hover:text-primary flex-shrink-0 transition-colors"
                 />
               </button>
             ))

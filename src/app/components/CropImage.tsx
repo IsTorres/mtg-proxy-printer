@@ -24,7 +24,6 @@ export function CropImage({ imageUrl, onCrop, onCancel }: CropImageProps) {
 
   const cropH = cropW / CARD_ASPECT_RATIO;
 
-  // Load image natural dimensions
   useEffect(() => {
     const img = new Image();
     img.onload = () => {
@@ -33,7 +32,6 @@ export function CropImage({ imageUrl, onCrop, onCancel }: CropImageProps) {
     img.src = imageUrl;
   }, [imageUrl]);
 
-  // Compute display size when container or natural size changes
   useEffect(() => {
     const el = containerRef.current;
     if (!el || !imgNatural.w || !imgNatural.h) return;
@@ -46,7 +44,6 @@ export function CropImage({ imageUrl, onCrop, onCancel }: CropImageProps) {
     setDisplaySize({ w, h });
   }, [imgNatural]);
 
-  // Center crop box when display size changes
   useEffect(() => {
     if (!displaySize.w || !displaySize.h) return;
     const maxW = Math.min(displaySize.w, CROP_INIT_PX);
@@ -58,7 +55,6 @@ export function CropImage({ imageUrl, onCrop, onCancel }: CropImageProps) {
     });
   }, [displaySize]);
 
-  // Clamp crop box to image bounds
   const clampOrigin = useCallback(
     (x: number, y: number, cw: number) => {
       const ch = cw / CARD_ASPECT_RATIO;
@@ -69,7 +65,6 @@ export function CropImage({ imageUrl, onCrop, onCancel }: CropImageProps) {
     [displaySize]
   );
 
-  // Drag handlers
   const handlePointerDown = useCallback(
     (e: React.PointerEvent) => {
       e.preventDefault();
@@ -104,7 +99,6 @@ export function CropImage({ imageUrl, onCrop, onCancel }: CropImageProps) {
     setDragging(false);
   }, []);
 
-  // Scroll wheel zoom
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -119,7 +113,6 @@ export function CropImage({ imageUrl, onCrop, onCancel }: CropImageProps) {
       const clampedW = Math.max(CROP_MIN_PX, Math.min(newCropW, displaySize.w));
       const newCropH = clampedW / CARD_ASPECT_RATIO;
 
-      // Keep mouse position relative to crop box stable
       const ratioX = (mouseX - cropOrigin.x) / cropW;
       const ratioY = (mouseY - cropOrigin.y) / cropH;
       const newX = mouseX - ratioX * clampedW;
@@ -133,7 +126,6 @@ export function CropImage({ imageUrl, onCrop, onCancel }: CropImageProps) {
     return () => el.removeEventListener("wheel", handleWheel);
   }, [cropW, cropH, cropOrigin, displaySize, clampOrigin]);
 
-  // Canvas export
   const handleCrop = useCallback(() => {
     if (!imgNatural.w || !displaySize.w) return;
 
@@ -158,10 +150,9 @@ export function CropImage({ imageUrl, onCrop, onCancel }: CropImageProps) {
 
   return (
     <div className="flex flex-col gap-3">
-      {/* Crop area */}
       <div
         ref={containerRef}
-        className="relative w-full bg-black/40 overflow-hidden select-none"
+        className="relative w-full bg-surface-container-highest rounded-lg overflow-hidden select-none"
         style={{ height: "280px" }}
       >
         {displaySize.w > 0 && (
@@ -181,7 +172,6 @@ export function CropImage({ imageUrl, onCrop, onCancel }: CropImageProps) {
               }}
             />
 
-            {/* Dark overlay — four rectangles around the crop box */}
             <div
               className="absolute bg-black/60"
               style={{ top: 0, left: 0, right: 0, height: cropOrigin.y }}
@@ -214,7 +204,6 @@ export function CropImage({ imageUrl, onCrop, onCancel }: CropImageProps) {
               }}
             />
 
-            {/* Crop box */}
             <div
               className="absolute border-2 border-white cursor-grab active:cursor-grabbing"
               style={{
@@ -227,33 +216,30 @@ export function CropImage({ imageUrl, onCrop, onCancel }: CropImageProps) {
               onPointerMove={handlePointerMove}
               onPointerUp={handlePointerUp}
             >
-              {/* Corner handles */}
-              <div className="absolute -top-1 -left-1 w-2.5 h-2.5 border border-white bg-background/80" />
-              <div className="absolute -top-1 -right-1 w-2.5 h-2.5 border border-white bg-background/80" />
-              <div className="absolute -bottom-1 -left-1 w-2.5 h-2.5 border border-white bg-background/80" />
-              <div className="absolute -bottom-1 -right-1 w-2.5 h-2.5 border border-white bg-background/80" />
+              <div className="absolute -top-1 -left-1 w-2.5 h-2.5 border border-white bg-surface/80" />
+              <div className="absolute -top-1 -right-1 w-2.5 h-2.5 border border-white bg-surface/80" />
+              <div className="absolute -bottom-1 -left-1 w-2.5 h-2.5 border border-white bg-surface/80" />
+              <div className="absolute -bottom-1 -right-1 w-2.5 h-2.5 border border-white bg-surface/80" />
             </div>
           </>
         )}
       </div>
 
-      {/* Hint */}
-      <div className="text-[9px] font-mono text-muted-foreground/60 text-center -mt-1">
+      <div className="text-[9px] font-mono text-on-surface-variant/50 text-center -mt-1">
         Scroll to resize · Drag to move
       </div>
 
-      {/* Actions */}
       <div className="flex gap-2">
         <button
           onClick={handleCrop}
-          className="flex-1 flex items-center justify-center gap-1.5 bg-accent text-[#0c0c11] text-[11px] font-mono font-medium tracking-wider py-1.5 hover:bg-accent/80 transition-colors"
+          className="flex-1 flex items-center justify-center gap-1.5 bg-primary text-on-primary text-[11px] font-mono font-medium tracking-wider py-2 rounded-lg hover:brightness-110 transition-all"
         >
           <Crop size={11} />
           CROP
         </button>
         <button
           onClick={onCancel}
-          className="flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors px-2"
+          className="flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors px-2"
         >
           <X size={13} />
         </button>

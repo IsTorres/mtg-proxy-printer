@@ -57,18 +57,17 @@ export function CustomCardUpload({ onAddCustom }: CustomCardUploadProps) {
     setFileName("");
   };
 
-  // Step 3: Name input with cropped preview
   if (step === "name") {
     return (
-      <div className="px-4 py-3 border-b border-border">
-        <div className="text-[9px] font-mono text-muted-foreground tracking-[0.2em] mb-2">
-          CUSTOM CARD
+      <div className="px-5 py-4 border-b border-outline-variant/30">
+        <div className="text-[10px] font-mono text-primary tracking-[0.15em] mb-2 uppercase">
+          Custom Card
         </div>
         <div className="flex gap-3">
           <img
             src={croppedImageUrl}
             alt="Preview"
-            className="w-12 h-[67px] object-cover flex-shrink-0 border border-border"
+            className="w-12 h-[67px] object-cover flex-shrink-0 border border-outline-variant/30 rounded"
           />
           <div className="flex-1 min-w-0">
             <input
@@ -76,22 +75,22 @@ export function CustomCardUpload({ onAddCustom }: CustomCardUploadProps) {
               onChange={e => setName(e.target.value)}
               onKeyDown={e => e.key === "Enter" && handleConfirm()}
               placeholder="Card name…"
-              className="w-full bg-input-background border border-border px-2 py-1 text-[12px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent transition-colors mb-1.5"
+              className="w-full bg-surface-container border border-outline-variant/30 rounded-lg px-2 py-1 text-[12px] text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all mb-1.5"
             />
-            <div className="text-[9px] font-mono text-muted-foreground/50 truncate mb-2">
+            <div className="text-[9px] font-mono text-on-surface-variant/50 truncate mb-2">
               {fileName}
             </div>
             <div className="flex gap-1.5">
               <button
                 onClick={handleConfirm}
                 disabled={!name.trim()}
-                className="flex-1 bg-accent text-[#0c0c11] text-[10px] font-mono font-medium tracking-wider py-1 hover:bg-accent/80 transition-colors disabled:opacity-30"
+                className="flex-1 bg-primary text-on-primary text-[10px] font-mono font-medium tracking-wider py-1.5 rounded-lg hover:brightness-110 transition-all disabled:opacity-30"
               >
                 ADD
               </button>
               <button
                 onClick={reset}
-                className="text-muted-foreground hover:text-foreground transition-colors px-1.5"
+                className="text-on-surface-variant hover:text-on-surface transition-colors px-1.5"
               >
                 <X size={12} />
               </button>
@@ -102,12 +101,11 @@ export function CustomCardUpload({ onAddCustom }: CustomCardUploadProps) {
     );
   }
 
-  // Step 2: Crop
   if (step === "crop") {
     return (
-      <div className="px-4 py-3 border-b border-border">
-        <div className="text-[9px] font-mono text-muted-foreground tracking-[0.2em] mb-2">
-          CROP YOUR CARD
+      <div className="px-5 py-4 border-b border-outline-variant/30">
+        <div className="text-[10px] font-mono text-primary tracking-[0.15em] mb-2 uppercase">
+          Crop Your Card
         </div>
         <CropImage
           imageUrl={rawImageUrl}
@@ -118,9 +116,8 @@ export function CustomCardUpload({ onAddCustom }: CustomCardUploadProps) {
     );
   }
 
-  // Step 1: Upload button
   return (
-    <div className="px-4 py-3 border-b border-border">
+    <div className="px-5 py-4 border-b border-outline-variant/30">
       <input
         ref={inputRef}
         type="file"
@@ -130,7 +127,7 @@ export function CustomCardUpload({ onAddCustom }: CustomCardUploadProps) {
       />
       <button
         onClick={() => inputRef.current?.click()}
-        className="w-full flex items-center justify-center gap-2 border border-border border-dashed py-2 text-[11px] font-mono text-muted-foreground hover:text-foreground hover:border-accent/50 transition-colors"
+        className="w-full flex items-center justify-center gap-2 border border-dashed border-outline-variant/40 rounded-lg py-2.5 text-[11px] font-mono text-on-surface-variant hover:text-on-surface hover:border-primary/30 transition-colors"
       >
         <Upload size={12} />
         UPLOAD CUSTOM CARD

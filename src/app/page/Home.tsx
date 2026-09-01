@@ -1,21 +1,27 @@
 import { useState, useCallback } from "react";
 import type { CardImage } from "../types";
-import { CARDS_PER_PAGE } from "../constants";
+import { CARDS_PER_PAGE, DEFAULT_CARD_SPACING, DEFAULT_SAFE_MARGIN } from "../constants";
 import { useScryfallSearch } from "../hooks/useScryfallSearch";
 import { useDeck } from "../hooks/useDeck";
 import { usePagination } from "../hooks/usePagination";
-import { Header } from "../components/Header";
 import { SearchBar } from "../components/SearchBar";
 import { CustomCardUpload } from "../components/CustomCardUpload";
 import { DeckList } from "../components/DeckList";
 import { PrintPreview } from "../components/PrintPreview";
 import { PrintSheet } from "../components/PrintSheet";
+import { PrintSettings } from "../components/PrintSettings";
+import { downloadPDF, downloadPNG, downloadJPG } from "../lib/export";
 
 export function Home() {
   const { query, setQuery, results, noResults, searching, clearSearch } = useScryfallSearch();
   const { entries, flatCards, totalPages, addCard, addCustomCard, removeEntry, adjustQty, clearAll } = useDeck();
   const { safePage, prev, next, reset } = usePagination(totalPages);
+
+  // Print settings
   const [showCutLines, setShowCutLines] = useState(true);
+  const [safeMargin, setSafeMargin] = useState(DEFAULT_SAFE_MARGIN);
+  const [cardSpacing, setCardSpacing] = useState(DEFAULT_CARD_SPACING);
+  const [exporting, setExporting] = useState(false);
 
   const handleSelectCard = useCallback(
     (card: CardImage) => {
@@ -35,6 +41,39 @@ export function Home() {
     (safePage + 1) * CARDS_PER_PAGE
   );
 
+  const exportOptions = { safeMargin, cardSpacing };
+
+  const handleExportPDF = async () => {
+    setExporting(true);
+    try {
+      const pages: CardImage[][] = [];
+      for (let i = 0; i < totalPages; i++) {
+        pages.push(flatCards.slice(i * CARDS_PER_PAGE, (i + 1) * CARDS_PER_PAGE));
+      }
+      await downloadPDF(pages, showCutLines, exportOptions);
+    } finally {
+      setExporting(false);
+    }
+  };
+
+  const handleExportPNG = async () => {
+    setExporting(true);
+    try {
+      await downloadPNG(previewCards, showCutLines, safePage + 1, exportOptions);
+    } finally {
+      setExporting(false);
+    }
+  };
+
+  const handleExportJPG = async () => {
+    setExporting(true);
+    try {
+      await downloadJPG(previewCards, showCutLines, safePage + 1, exportOptions);
+    } finally {
+      setExporting(false);
+    }
+  };
+
   return (
     <>
       <style>{`
@@ -47,21 +86,24 @@ export function Home() {
 
         ::-webkit-scrollbar { width: 3px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(200,169,110,0.35); border-radius: 2px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(200,169,110,0.65); }
+        ::-webkit-scrollbar-thumb { background: rgba(242,202,80,0.2); border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(242,202,80,0.4); }
       `}</style>
 
-      <div className="screen-ui min-h-screen bg-background text-foreground flex flex-col font-sans">
-        <Header
-          showCutLines={showCutLines}
-          onToggleCutLines={() => setShowCutLines(v => !v)}
-          flatCards={flatCards}
-          totalPages={totalPages}
-          currentPage={safePage}
-        />
-
+      <div className="screen-ui h-screen bg-background text-foreground flex flex-col font-sans overflow-hidden">
         <div className="flex flex-1 min-h-0">
-          <aside className="w-72 flex-shrink-0 border-r border-border flex flex-col overflow-hidden">
+          {/* Sidebar */}
+          <aside className="w-80 flex-shrink-0 border-r border-outline-variant/30 flex flex-col overflow-hidden bg-sidebar">
+            {/* Brand */}
+            <div className="px-6 py-5 border-b border-outline-variant/30">
+              <h1 className="font-display text-xl font-bold tracking-[0.15em] text-primary uppercase">
+                Proxy Forge
+              </h1>
+              <p className="text-[10px] font-mono text-on-surface-variant tracking-[0.2em] mt-1">
+                MTG · A4 PRINT LAYOUT
+              </p>
+            </div>
+
             <SearchBar
               query={query}
               onQueryChange={setQuery}
@@ -81,6 +123,7 @@ export function Home() {
             />
           </aside>
 
+          {/* Canvas Area */}
           <PrintPreview
             previewCards={previewCards}
             showCutLines={showCutLines}
@@ -88,7 +131,23 @@ export function Home() {
             totalPages={totalPages}
             onPrevPage={prev}
             onNextPage={next}
-          />
+            safeMargin={safeMargin}
+            cardSpacing={cardSpacing}
+          >
+            <PrintSettings
+              showCutLines={showCutLines}
+              onToggleCutLines={() => setShowCutLines(v => !v)}
+              safeMargin={safeMargin}
+              onToggleSafeMargin={() => setSafeMargin(v => !v)}
+              cardSpacing={cardSpacing}
+              onSpacingChange={setCardSpacing}
+              onExportPDF={handleExportPDF}
+              onExportPNG={handleExportPNG}
+              onExportJPG={handleExportJPG}
+              exporting={exporting}
+              hasCards={flatCards.length > 0}
+            />
+          </PrintPreview>
         </div>
       </div>
 
@@ -98,6 +157,8 @@ export function Home() {
             key={pageIdx}
             cards={flatCards.slice(pageIdx * CARDS_PER_PAGE, (pageIdx + 1) * CARDS_PER_PAGE)}
             showCutLines={showCutLines}
+            safeMargin={safeMargin}
+            cardSpacing={cardSpacing}
           />
         ))}
       </div>
