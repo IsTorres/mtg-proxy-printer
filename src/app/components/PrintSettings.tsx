@@ -28,7 +28,7 @@ export function PrintSettings({
   hasCards,
 }: PrintSettingsProps) {
   return (
-    <div className="absolute right-6 top-6 bottom-6 w-80 bg-surface-container/90 backdrop-blur-lg rounded-xl shadow-2xl flex flex-col pointer-events-auto border border-outline-variant/20 z-20">
+    <div className="right-6 top-16 bottom-6 w-80 bg-surface-container/90 backdrop-blur-lg shadow-2xl flex flex-col pointer-events-auto border border-outline-variant/20 z-20">
       {/* Header */}
       <div className="p-6 border-b border-outline-variant/20">
         <h2 className="font-display text-lg font-semibold text-on-surface">

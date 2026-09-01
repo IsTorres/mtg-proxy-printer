@@ -14,7 +14,6 @@ interface PrintPreviewProps {
   onNextPage: () => void;
   safeMargin: boolean;
   cardSpacing: number;
-  children: ReactNode;
 }
 
 export function PrintPreview({
@@ -26,7 +25,6 @@ export function PrintPreview({
   onNextPage,
   safeMargin,
   cardSpacing,
-  children,
 }: PrintPreviewProps) {
   const [zoom, setZoom] = useState(ZOOM_DEFAULT);
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -146,9 +144,6 @@ export function PrintPreview({
           </div>
         </div>
       </div>
-
-      {/* Settings panel (children) */}
-      {children}
     </main>
   );
 }

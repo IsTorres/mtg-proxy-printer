@@ -1,6 +1,10 @@
 import { useState, useCallback } from "react";
 import type { CardImage } from "../types";
-import { CARDS_PER_PAGE, DEFAULT_CARD_SPACING, DEFAULT_SAFE_MARGIN } from "../constants";
+import {
+  CARDS_PER_PAGE,
+  DEFAULT_CARD_SPACING,
+  DEFAULT_SAFE_MARGIN,
+} from "../constants";
 import { useScryfallSearch } from "../hooks/useScryfallSearch";
 import { useDeck } from "../hooks/useDeck";
 import { usePagination } from "../hooks/usePagination";
@@ -13,8 +17,18 @@ import { PrintSettings } from "../components/PrintSettings";
 import { downloadPDF, downloadPNG, downloadJPG } from "../lib/export";
 
 export function Home() {
-  const { query, setQuery, results, noResults, searching, clearSearch } = useScryfallSearch();
-  const { entries, flatCards, totalPages, addCard, addCustomCard, removeEntry, adjustQty, clearAll } = useDeck();
+  const { query, setQuery, results, noResults, searching, clearSearch } =
+    useScryfallSearch();
+  const {
+    entries,
+    flatCards,
+    totalPages,
+    addCard,
+    addCustomCard,
+    removeEntry,
+    adjustQty,
+    clearAll,
+  } = useDeck();
   const { safePage, prev, next, reset } = usePagination(totalPages);
 
   // Print settings
@@ -28,7 +42,7 @@ export function Home() {
       addCard(card);
       clearSearch();
     },
-    [addCard, clearSearch]
+    [addCard, clearSearch],
   );
 
   const handleClearAll = useCallback(() => {
@@ -38,7 +52,7 @@ export function Home() {
 
   const previewCards = flatCards.slice(
     safePage * CARDS_PER_PAGE,
-    (safePage + 1) * CARDS_PER_PAGE
+    (safePage + 1) * CARDS_PER_PAGE,
   );
 
   const exportOptions = { safeMargin, cardSpacing };
@@ -48,7 +62,9 @@ export function Home() {
     try {
       const pages: CardImage[][] = [];
       for (let i = 0; i < totalPages; i++) {
-        pages.push(flatCards.slice(i * CARDS_PER_PAGE, (i + 1) * CARDS_PER_PAGE));
+        pages.push(
+          flatCards.slice(i * CARDS_PER_PAGE, (i + 1) * CARDS_PER_PAGE),
+        );
       }
       await downloadPDF(pages, showCutLines, exportOptions);
     } finally {
@@ -59,7 +75,12 @@ export function Home() {
   const handleExportPNG = async () => {
     setExporting(true);
     try {
-      await downloadPNG(previewCards, showCutLines, safePage + 1, exportOptions);
+      await downloadPNG(
+        previewCards,
+        showCutLines,
+        safePage + 1,
+        exportOptions,
+      );
     } finally {
       setExporting(false);
     }
@@ -68,7 +89,12 @@ export function Home() {
   const handleExportJPG = async () => {
     setExporting(true);
     try {
-      await downloadJPG(previewCards, showCutLines, safePage + 1, exportOptions);
+      await downloadJPG(
+        previewCards,
+        showCutLines,
+        safePage + 1,
+        exportOptions,
+      );
     } finally {
       setExporting(false);
     }
@@ -133,21 +159,21 @@ export function Home() {
             onNextPage={next}
             safeMargin={safeMargin}
             cardSpacing={cardSpacing}
-          >
-            <PrintSettings
-              showCutLines={showCutLines}
-              onToggleCutLines={() => setShowCutLines(v => !v)}
-              safeMargin={safeMargin}
-              onToggleSafeMargin={() => setSafeMargin(v => !v)}
-              cardSpacing={cardSpacing}
-              onSpacingChange={setCardSpacing}
-              onExportPDF={handleExportPDF}
-              onExportPNG={handleExportPNG}
-              onExportJPG={handleExportJPG}
-              exporting={exporting}
-              hasCards={flatCards.length > 0}
-            />
-          </PrintPreview>
+          />
+
+          <PrintSettings
+            showCutLines={showCutLines}
+            onToggleCutLines={() => setShowCutLines((v) => !v)}
+            safeMargin={safeMargin}
+            onToggleSafeMargin={() => setSafeMargin((v) => !v)}
+            cardSpacing={cardSpacing}
+            onSpacingChange={setCardSpacing}
+            onExportPDF={handleExportPDF}
+            onExportPNG={handleExportPNG}
+            onExportJPG={handleExportJPG}
+            exporting={exporting}
+            hasCards={flatCards.length > 0}
+          />
         </div>
       </div>
 
@@ -155,7 +181,10 @@ export function Home() {
         {Array.from({ length: totalPages }).map((_, pageIdx) => (
           <PrintSheet
             key={pageIdx}
-            cards={flatCards.slice(pageIdx * CARDS_PER_PAGE, (pageIdx + 1) * CARDS_PER_PAGE)}
+            cards={flatCards.slice(
+              pageIdx * CARDS_PER_PAGE,
+              (pageIdx + 1) * CARDS_PER_PAGE,
+            )}
             showCutLines={showCutLines}
             safeMargin={safeMargin}
             cardSpacing={cardSpacing}
