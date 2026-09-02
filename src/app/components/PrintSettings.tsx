@@ -28,14 +28,14 @@ export function PrintSettings({
   hasCards,
 }: PrintSettingsProps) {
   return (
-    <div className="right-6 top-16 bottom-6 w-80 bg-surface-container/90 backdrop-blur-lg shadow-2xl flex flex-col pointer-events-auto border border-outline-variant/20 z-20">
+    <div className="flex flex-col bg-surface-container/90 backdrop-blur-lg shadow-2xl border border-outline-variant/20 pointer-events-auto overflow-hidden">
       {/* Header */}
       <div className="p-6 border-b border-outline-variant/20">
         <h2 className="font-display text-lg font-semibold text-on-surface">
-          Configuração de Impressão
+          Print Settings
         </h2>
         <p className="text-sm text-on-surface-variant mt-1">
-          Ajuste os parâmetros antes de exportar o documento final.
+          Adjust parameters before exporting the final document.
         </p>
       </div>
 
@@ -44,14 +44,14 @@ export function PrintSettings({
         {/* Toggles */}
         <div className="flex flex-col gap-3">
           <label className="text-xs font-mono text-primary tracking-[0.1em] uppercase">
-            Guias Visuais
+            Visual Guides
           </label>
 
           {/* Cut Lines */}
           <div className="flex items-center justify-between p-3 bg-surface-variant rounded-lg">
             <div className="flex items-center gap-3">
               <Scissors size={16} className="text-on-surface-variant" />
-              <span className="text-sm text-on-surface">Linhas de Corte</span>
+              <span className="text-sm text-on-surface">Cut Lines</span>
             </div>
             <button
               onClick={onToggleCutLines}
@@ -73,7 +73,7 @@ export function PrintSettings({
           <div className="flex items-center justify-between p-3 bg-surface-variant rounded-lg">
             <div className="flex items-center gap-3">
               <Square size={16} className="text-on-surface-variant" />
-              <span className="text-sm text-on-surface">Forçar Margem Segura</span>
+              <span className="text-sm text-on-surface">Force Safe Margin</span>
             </div>
             <button
               onClick={onToggleSafeMargin}
@@ -96,7 +96,7 @@ export function PrintSettings({
         <div className="flex flex-col gap-3">
           <div className="flex justify-between items-end">
             <label className="text-xs font-mono text-primary tracking-[0.1em] uppercase">
-              Espaçamento Entre Cartas
+              Card Spacing
             </label>
             <span className="text-xs font-mono text-on-surface-variant">{cardSpacing}mm</span>
           </div>
@@ -115,7 +115,7 @@ export function PrintSettings({
         <div className="bg-surface-container-lowest p-3 rounded-lg flex gap-3 items-start border border-outline-variant/10">
           <Info size={18} className="text-primary mt-0.5 flex-shrink-0" />
           <p className="text-sm text-on-surface-variant">
-            As imagens serão redimensionadas para o padrão oficial (63×88mm) a 300 DPI.
+            Images will be resized to the official standard (63×88mm) at 300 DPI.
           </p>
         </div>
       </div>
@@ -128,7 +128,7 @@ export function PrintSettings({
           className="w-full bg-primary text-on-primary text-sm font-semibold py-3 px-4 rounded-lg hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20 disabled:opacity-30"
         >
           <FileText size={16} />
-          {exporting ? "Exportando…" : "Exportar PDF (Todas)"}
+          {exporting ? "Exporting…" : "Export PDF (All)"}
         </button>
         <div className="grid grid-cols-2 gap-2">
           <button

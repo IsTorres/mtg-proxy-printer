@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect, type ReactNode } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { ZoomIn, ZoomOut } from "lucide-react";
 import type { CardImage } from "../types";
 import { A4_W, A4_H, ZOOM_MIN, ZOOM_MAX, ZOOM_STEP, ZOOM_DEFAULT } from "../constants";
@@ -28,6 +28,17 @@ export function PrintPreview({
 }: PrintPreviewProps) {
   const [zoom, setZoom] = useState(ZOOM_DEFAULT);
   const canvasRef = useRef<HTMLDivElement>(null);
+
+  // Fit A4 width on mobile
+  useEffect(() => {
+    const el = canvasRef.current;
+    if (!el) return;
+    const mql = window.matchMedia("(max-width: 640px)");
+    if (!mql.matches) return;
+    const available = el.clientWidth - 32; // p-4 each side
+    const fit = +(available / A4_W).toFixed(2);
+    if (fit < ZOOM_DEFAULT) setZoom(Math.max(ZOOM_MIN, fit));
+  }, []);
 
   const zoomIn = useCallback(() => {
     setZoom(z => Math.min(ZOOM_MAX, +(z + ZOOM_STEP).toFixed(2)));
@@ -72,7 +83,7 @@ export function PrintPreview({
       </div>
 
       {/* Navigation + Zoom controls — always visible */}
-      <div className="relative z-10 flex items-center gap-5 px-6 py-3 flex-shrink-0 border-b border-outline-variant/20">
+      <div className="relative z-10 flex items-center gap-3 sm:gap-5 px-3 sm:px-6 py-2 sm:py-3 flex-shrink-0 border-b border-outline-variant/20">
         <PageNavigation
           safePage={safePage}
           totalPages={totalPages}
@@ -108,7 +119,7 @@ export function PrintPreview({
       {/* Scrollable canvas area */}
       <div
         ref={canvasRef}
-        className="relative z-10 flex-1 overflow-auto flex items-start justify-center p-8"
+        className="relative z-10 flex-1 overflow-auto flex items-start justify-center p-4 sm:p-8"
       >
         <div className="flex flex-col items-center gap-4">
           {/* Paper sheet with zoom */}
