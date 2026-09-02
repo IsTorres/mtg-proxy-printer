@@ -196,7 +196,7 @@ export function Home() {
                   </p>
                 </div>
                 <img
-                  src="/src/assets/PF-icon.webp"
+                  src="/PF.webp"
                   alt="MTG Proxy Printer"
                   className="h-12 ml-4"
                 />
