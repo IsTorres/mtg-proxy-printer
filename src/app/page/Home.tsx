@@ -186,13 +186,20 @@ export function Home() {
           {!isMobile && (
             <aside className="w-80 flex-shrink-0 border-r border-outline-variant/30 flex flex-col overflow-hidden bg-sidebar">
               {/* Brand */}
-              <div className="px-6 py-5 border-b border-outline-variant/30">
-                <h1 className="font-display text-xl font-bold tracking-[0.15em] text-primary uppercase">
-                  Proxy Forge
-                </h1>
-                <p className="text-[10px] font-mono text-on-surface-variant tracking-[0.2em] mt-1">
-                  MTG · A4 PRINT LAYOUT
-                </p>
+              <div className="flex items-center justify-center bg-surface-variant/10">
+                <div className="px-6 py-5 border-b border-outline-variant/30">
+                  <h1 className="font-display text-xl font-bold tracking-[0.15em] text-primary uppercase">
+                    Proxy Forge
+                  </h1>
+                  <p className="text-[10px] font-mono text-on-surface-variant tracking-[0.2em] mt-1">
+                    MTG · A4 PRINT LAYOUT
+                  </p>
+                </div>
+                <img
+                  src="/src/assets/PF-icon.webp"
+                  alt="MTG Proxy Printer"
+                  className="h-12 ml-4"
+                />
               </div>
 
               <SearchBar
